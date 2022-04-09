@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\modelPengrajin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class pengrajinAPIController extends Controller
 {
@@ -56,14 +57,17 @@ class pengrajinAPIController extends Controller
             'alamat' => 'required',
             'email' => 'required',
         ], $messages);
+        DB::beginTransaction();
         try {
             $response = modelPengrajin::create($validasi);
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
                 'data' => $response,
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Err',
                 'errors' => $e->getMessage(),
@@ -109,14 +113,17 @@ class pengrajinAPIController extends Controller
             'alamat' => 'required',
             'email' => 'required',
         ]);
+        DB::beginTransaction();
         try {
             $response = modelPengrajin::find($id);
             $response->update($validasi);
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Err',
                 'errors' => $e->getMessage(),
@@ -132,14 +139,17 @@ class pengrajinAPIController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $peng = modelPengrajin::find($id);
             $peng->delete();
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Err',
                 'errors' => $e->getMessage(),

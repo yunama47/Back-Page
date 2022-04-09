@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\modelBarang;
 use App\Models\modelKeranjang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class keranjangAPIController extends Controller
 {
@@ -45,14 +46,17 @@ class keranjangAPIController extends Controller
             'alamat' => 'required',
             'no_telp' => 'required'
         ]);
+        DB::beginTransaction();
         try {
             $response = modelKeranjang::create($validasi);
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
                 'data' => $response,
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Err',
                 'errors' => $e->getMessage(),
@@ -104,6 +108,7 @@ class keranjangAPIController extends Controller
             'id_peng' => 'required',
             'gambar' => ''
         ]);
+        DB::beginTransaction();
         try {
             if ($request->file('gambar')) {
                 $fileName = time() . $request->file('gambar')->getClientOriginalName();
@@ -112,11 +117,13 @@ class keranjangAPIController extends Controller
             }
             $response = modelBarang::find($id);
             $response->update($validasi);
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Err',
                 'errors' => $e->getMessage(),
@@ -131,14 +138,17 @@ class keranjangAPIController extends Controller
      */
     public function destroy($id)
     {
+        DB::beginTransaction();
         try {
             $barang = modelBarang::find($id);
             $barang->delete();
+            DB::commit();
             return response()->json([
                 'success' => true,
                 'message' => 'success',
             ]);
         } catch (\Exception $e) {
+            DB::rollBack();
             return response()->json([
                 'message' => 'Err',
                 'errors' => $e->getMessage(),

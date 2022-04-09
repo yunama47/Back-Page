@@ -72,7 +72,7 @@
                         {{ __('Log Out') }}
                     </button>
                 </form>
-                <!-- </div> -->
+            </div>
         </header>
         <div id="admin"></div>
     </div>
