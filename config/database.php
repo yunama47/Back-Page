@@ -16,11 +16,6 @@ return [
     */
 
     'default' => env('DB_CONNECTION', 'mysql'),
-    // [
-    //     'read' => ['host' => env('DB_HOST_READ')],
-    //     'write'=> ['host' => env('DB_HOST_WRITE')],
-    //     'database' => env('DB_MASTER'),
-    // ],
 
     /*
     |--------------------------------------------------------------------------
@@ -51,10 +46,13 @@ return [
         'mysql' => [
             'read' => [
                 'host' => '192.168.1.10',
+                // 'username'=>'test'
             ],
             'write' => [
-                'host' => '127.0.0.1',
+                'host' => '192.168.1.6',
+                // 'username'=>'test'
             ],
+            // 'host' => env('DB_HOST','127.0.0.1'),
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'port' => env('DB_PORT', '3306'),
